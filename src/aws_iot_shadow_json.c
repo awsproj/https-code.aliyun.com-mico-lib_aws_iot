@@ -69,12 +69,12 @@ static inline IoT_Error_t checkReturnValueOfSnPrintf(int32_t snPrintfReturn, siz
 	} else if((size_t) snPrintfReturn >= maxSizeOfJsonDocument) {
 		return SHADOW_JSON_BUFFER_TRUNCATED;
 	}
-	return SUCCESS;
+	return MQTT_SUCCESS;
 }
 
 IoT_Error_t aws_iot_shadow_init_json_document(char *pJsonDocument, size_t maxSizeOfJsonDocument) {
 
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 	int32_t snPrintfReturn = 0;
 
 	if(pJsonDocument == NULL) {
@@ -89,7 +89,7 @@ IoT_Error_t aws_iot_shadow_init_json_document(char *pJsonDocument, size_t maxSiz
 }
 
 IoT_Error_t aws_iot_shadow_add_desired(char *pJsonDocument, size_t maxSizeOfJsonDocument, uint8_t count, ...) {
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 	size_t tempSize = 0;
 	int8_t i;
 	size_t remSizeOfJsonBuffer = maxSizeOfJsonDocument;
@@ -111,7 +111,7 @@ IoT_Error_t aws_iot_shadow_add_desired(char *pJsonDocument, size_t maxSizeOfJson
 	snPrintfReturn = snprintf(pJsonDocument + strlen(pJsonDocument), remSizeOfJsonBuffer, "\"desired\":{");
 	ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
 
-	if(ret_val != SUCCESS) {
+	if(ret_val != MQTT_SUCCESS) {
 		return ret_val;
 	}
 
@@ -126,7 +126,7 @@ IoT_Error_t aws_iot_shadow_add_desired(char *pJsonDocument, size_t maxSizeOfJson
 			snPrintfReturn = snprintf(pJsonDocument + strlen(pJsonDocument), remSizeOfJsonBuffer, "\"%s\":",
 									  pTemporary->pKey);
 			ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
-			if(ret_val != SUCCESS) {
+			if(ret_val != MQTT_SUCCESS) {
 				return ret_val;
 			}
 			if(pTemporary->pKey != NULL && pTemporary->pData != NULL) {
@@ -135,7 +135,7 @@ IoT_Error_t aws_iot_shadow_add_desired(char *pJsonDocument, size_t maxSizeOfJson
 			} else {
 				return NULL_VALUE_ERROR;
 			}
-			if(ret_val != SUCCESS) {
+			if(ret_val != MQTT_SUCCESS) {
 				return ret_val;
 			}
 		} else {
@@ -150,7 +150,7 @@ IoT_Error_t aws_iot_shadow_add_desired(char *pJsonDocument, size_t maxSizeOfJson
 }
 
 IoT_Error_t aws_iot_shadow_add_reported(char *pJsonDocument, size_t maxSizeOfJsonDocument, uint8_t count, ...) {
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 
 	int8_t i;
 	size_t remSizeOfJsonBuffer = maxSizeOfJsonDocument;
@@ -174,7 +174,7 @@ IoT_Error_t aws_iot_shadow_add_reported(char *pJsonDocument, size_t maxSizeOfJso
 	snPrintfReturn = snprintf(pJsonDocument + strlen(pJsonDocument), remSizeOfJsonBuffer, "\"reported\":{");
 	ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
 
-	if(ret_val != SUCCESS) {
+	if(ret_val != MQTT_SUCCESS) {
 		return ret_val;
 	}
 
@@ -190,7 +190,7 @@ IoT_Error_t aws_iot_shadow_add_reported(char *pJsonDocument, size_t maxSizeOfJso
 			snPrintfReturn = snprintf(pJsonDocument + strlen(pJsonDocument), remSizeOfJsonBuffer, "\"%s\":",
 									  pTemporary->pKey);
 			ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
-			if(ret_val != SUCCESS) {
+			if(ret_val != MQTT_SUCCESS) {
 				return ret_val;
 			}
 			if(pTemporary->pKey != NULL && pTemporary->pData != NULL) {
@@ -199,7 +199,7 @@ IoT_Error_t aws_iot_shadow_add_reported(char *pJsonDocument, size_t maxSizeOfJso
 			} else {
 				return NULL_VALUE_ERROR;
 			}
-			if(ret_val != SUCCESS) {
+			if(ret_val != MQTT_SUCCESS) {
 				return ret_val;
 			}
 		} else {
@@ -234,7 +234,7 @@ IoT_Error_t aws_iot_finalize_json_document(char *pJsonDocument, size_t maxSizeOf
 	size_t remSizeOfJsonBuffer = maxSizeOfJsonDocument;
 	int32_t snPrintfReturn = 0;
 	size_t tempSize = 0;
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 
 	if(pJsonDocument == NULL) {
 		return NULL_VALUE_ERROR;
@@ -251,7 +251,7 @@ IoT_Error_t aws_iot_finalize_json_document(char *pJsonDocument, size_t maxSizeOf
 							  SHADOW_CLIENT_TOKEN_STRING);
 	ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
 
-	if(ret_val != SUCCESS) {
+	if(ret_val != MQTT_SUCCESS) {
 		return ret_val;
 	}
 	// refactor this XXX repeated code
@@ -265,7 +265,7 @@ IoT_Error_t aws_iot_finalize_json_document(char *pJsonDocument, size_t maxSizeOf
 	snPrintfReturn = FillWithClientTokenSize(pJsonDocument + strlen(pJsonDocument), remSizeOfJsonBuffer);
 	ret_val = checkReturnValueOfSnPrintf(snPrintfReturn, remSizeOfJsonBuffer);
 
-	if(ret_val != SUCCESS) {
+	if(ret_val != MQTT_SUCCESS) {
 		return ret_val;
 	}
 	tempSize = maxSizeOfJsonDocument - strlen(pJsonDocument);
@@ -288,7 +288,7 @@ void FillWithClientToken(char *pBufferToBeUpdatedWithClientToken) {
 static IoT_Error_t convertDataToString(char *pStringBuffer, size_t maxSizoStringBuffer, JsonPrimitiveType type,
 									   void *pData) {
 	int32_t snPrintfReturn = 0;
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 
 	if(maxSizoStringBuffer == 0) {
 		return SHADOW_JSON_ERROR;
@@ -350,7 +350,7 @@ bool isJsonValidAndParse(const char *pJsonDocument, void *pJsonHandler, int32_t 
 }
 
 static IoT_Error_t UpdateValueIfNoObject(const char *pJsonString, jsonStruct_t *pDataStruct, jsmntok_t token) {
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 	if(pDataStruct->type == SHADOW_JSON_BOOL) {
 		ret_val = parseBooleanValue((bool *) pDataStruct->pData, pJsonString, &token);
 	} else if(pDataStruct->type == SHADOW_JSON_INT32) {
@@ -450,14 +450,14 @@ bool extractClientToken(const char *pJsonDocument, char *pExtractedClientToken) 
 
 bool extractVersionNumber(const char *pJsonDocument, void *pJsonHandler, int32_t tokenCount, uint32_t *pVersionNumber) {
 	int32_t i;
-	IoT_Error_t ret_val = SUCCESS;
+	IoT_Error_t ret_val = MQTT_SUCCESS;
 
 	IOT_UNUSED(pJsonHandler);
 
 	for(i = 1; i < tokenCount; i++) {
 		if(jsoneq(pJsonDocument, &(jsonTokenStruct[i]), SHADOW_VERSION_STRING) == 0) {
 			ret_val = parseUnsignedInteger32Value(pVersionNumber, pJsonDocument, &jsonTokenStruct[i + 1]);
-			if(ret_val == SUCCESS) {
+			if(ret_val == MQTT_SUCCESS) {
 				return true;
 			}
 		}

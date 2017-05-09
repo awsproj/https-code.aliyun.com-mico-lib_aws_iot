@@ -77,10 +77,9 @@ IoT_Error_t aws_iot_shadow_init(AWS_IoT_Client *pClient, ShadowInitParameters_t 
     mqttInitParams.isClientnameVerify = true;
     mqttInitParams.isUseSSL = true;
 	mqttInitParams.disconnectHandler = pParams->disconnectHandler;
-	mqttInitParams.isBlockOnThreadLockEnabled = true;
 
 	rc = mqtt_init(pClient, &mqttInitParams);
-	if(SUCCESS != rc) {
+	if(MQTT_SUCCESS != rc) {
 		FUNC_EXIT_RC(rc);
 	}
 
@@ -88,11 +87,11 @@ IoT_Error_t aws_iot_shadow_init(AWS_IoT_Client *pClient, ShadowInitParameters_t 
 	aws_iot_shadow_reset_last_received_version();
 	initDeltaTokens();
 
-	FUNC_EXIT_RC(SUCCESS);
+	FUNC_EXIT_RC(MQTT_SUCCESS);
 }
 
 IoT_Error_t aws_iot_shadow_connect(AWS_IoT_Client *pClient, ShadowConnectParameters_t *pParams) {
-	IoT_Error_t rc = SUCCESS;
+	IoT_Error_t rc = MQTT_SUCCESS;
 	char deleteAcceptedTopic[MAX_SHADOW_TOPIC_LENGTH_BYTES];
 	uint16_t deleteAcceptedTopicLen;
 	IoT_Client_Connect_Params ConnectParams = iotClientConnectParamsDefault;
@@ -117,7 +116,7 @@ IoT_Error_t aws_iot_shadow_connect(AWS_IoT_Client *pClient, ShadowConnectParamet
 
 	rc = mqtt_connect(pClient, &ConnectParams);
 
-	if(SUCCESS == rc) {
+	if(MQTT_SUCCESS == rc) {
 		initializeRecords(pClient);
 	}
 
