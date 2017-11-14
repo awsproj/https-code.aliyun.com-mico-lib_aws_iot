@@ -495,17 +495,17 @@ static void shadow_delta_callback(AWS_IoT_Client *pClient, char *topicName,
 		return;
 	}
 
-	if(shadowDiscardOldDeltaFlag) {
-		if(extractVersionNumber(shadowRxBuf, pJsonHandler, tokenCount, &tempVersionNumber)) {
-			if(tempVersionNumber > shadowJsonVersionNum) {
-				shadowJsonVersionNum = tempVersionNumber;
-			} else {
-				IOT_WARN("Old Delta Message received - Ignoring rx: %d local: %d", (int)tempVersionNumber,
-				         (int)shadowJsonVersionNum);
-				return;
-			}
-		}
-	}
+//	if(shadowDiscardOldDeltaFlag) {
+//		if(extractVersionNumber(shadowRxBuf, pJsonHandler, tokenCount, &tempVersionNumber)) {
+//			if(tempVersionNumber > shadowJsonVersionNum) {
+//				shadowJsonVersionNum = tempVersionNumber;
+//			} else {
+//				IOT_WARN("Old Delta Message received - Ignoring rx: %d local: %d", (int)tempVersionNumber,
+//				         (int)shadowJsonVersionNum);
+//				return;
+//			}
+//		}
+//	}
 
 	for(i = 0; i < tokenTableIndex; i++) {
 		if(!tokenTable[i].isFree) {
