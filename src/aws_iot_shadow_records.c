@@ -113,7 +113,10 @@ IoT_Error_t registerJsonTokenOnDelta(jsonStruct_t *pStruct) {
 		snprintf(shadowDeltaTopic, MAX_SHADOW_TOPIC_LENGTH_BYTES, "$aws/things/%s/shadow/update/delta", myThingName);
 		rc = mqtt_subscribe(pMqttClient, shadowDeltaTopic, (uint16_t) strlen(shadowDeltaTopic), QOS0,
 									shadow_delta_callback, NULL);
-		deltaTopicSubscribedFlag = true;
+		if (rc != MQTT_SUCCESS)
+			deltaTopicSubscribedFlag = false;
+		else
+			deltaTopicSubscribedFlag = true;
 	}
 
 	if(tokenTableIndex >= MAX_JSON_TOKEN_EXPECTED) {
