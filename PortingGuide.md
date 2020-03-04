@@ -51,8 +51,8 @@ A timer implementation is necessary to handle request timeouts (sending MQTT con
 
 Define the `Timer` Struct as in `timer_platform.h`
 
-`void init_timer(Timer *);`
-init_timer - A timer structure is initialized to a clean state.
+`void mqtt_init_timer(Timer *);`
+mqtt_init_timer - A timer structure is initialized to a clean state.
 
 `bool has_timer_expired(Timer *);`
 has_timer_expired - a polling function to determine if the timer has expired.

@@ -361,7 +361,7 @@ IoT_Error_t subscribeToShadowActionAcks(const char *pThingName, ShadowActions_t 
 				clearBothEntriesFromList = false;
 
 				// wait for SUBSCRIBE_SETTLING_TIME seconds to let the subscription take effect
-				init_timer(&subSettlingtimer);
+				mqtt_init_timer(&subSettlingtimer);
 				countdown_sec(&subSettlingtimer, SUBSCRIBE_SETTLING_TIME);
 				while(!has_timer_expired(&subSettlingtimer));
 
@@ -452,7 +452,7 @@ void addToAckWaitList(uint8_t indexAckWaitList, const char *pThingName, ShadowAc
 	memcpy(AckWaitList[indexAckWaitList].thingName, pThingName, MAX_SIZE_OF_THING_NAME);
 	AckWaitList[indexAckWaitList].pCallbackContext = pCallbackContext;
 	AckWaitList[indexAckWaitList].action = action;
-	init_timer(&(AckWaitList[indexAckWaitList].timer));
+	mqtt_init_timer(&(AckWaitList[indexAckWaitList].timer));
 	countdown_sec(&(AckWaitList[indexAckWaitList].timer), timeout_seconds);
 	AckWaitList[indexAckWaitList].isFree = false;
 }
